@@ -1,0 +1,5 @@
+avalanche_imagine:
+    filters:
+        cart_thumb:
+            type:    thumbnail
+            options: { size: [200, 200], mode: inset }

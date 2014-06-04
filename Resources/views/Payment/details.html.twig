@@ -1,0 +1,7 @@
+{% extends 'CMSBundle:Templates:'~entity.view|default(cms.base_template)~".html.twig" %}
+{% block body %}
+    <h1>{{'Детали'|trans}}</h1>
+    <div class="inner">
+        {{ form(form,{'style':'horizontal'}) }}
+    </div>
+{% endblock %}

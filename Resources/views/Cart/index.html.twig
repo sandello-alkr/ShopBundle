@@ -1,0 +1,19 @@
+{% extends 'CMSBundle:Templates:'~entity.view|default(cms.base_template)~".html.twig" %}
+{% block title %}{{'cart.title'|trans}}{% endblock %}
+{% block body %}
+    <h1>{{'cart.h1'|trans}}</h1>
+    <div class="inner">
+        всего {{cart.orders|length}} заказов.
+        {% for order in cart.orders %}
+        <div class="order row">
+            <div class="col-md-2">
+                <img scr="{% if order.good.preview %}{{order.good.preview|apply_filter('cart_thumb')}}{% endif %}"/>
+            </div>
+        {{order.count}} шт. {{order.good.title}} по {{order.good.price}} <form class="delete-inline" action="{{ path('delete_order',{'id':order.id,'cart':cart.hash}) }}" method="POST"><button class="btn btn-danger">{{ icon('remove') }}</button></form>
+        </div>
+        {% endfor %}
+        {% if cart.amount > 0 %}
+        <a class="btn btn-primary" href="{{path('payment_details',{'cart':cart.hash})}}">Оплата</a>
+        {% endif %}
+    </div>
+{% endblock %}

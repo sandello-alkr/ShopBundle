@@ -1,0 +1,52 @@
+{% extends 'CMSBundle:Default:manager.html.twig' %}
+
+{% block body -%}
+    <h1>{{'Редактирование страницы'|trans}}</h1>
+
+    {{ form(edit_form, {'style':'horizontal'}) }}
+
+    <div class="row form-group">
+        <div class="col-md-10 col-md-push-2">
+            <a class="btn btn-default" href="{{ path('manager_index') }}">
+                {{'Назад'|trans}}
+            </a>
+        </div>
+    </div>
+    {% if entity.parent is not null %}
+    <div class="row">
+        <div class="col-md-10 col-md-push-2">
+            {{ form(delete_form) }}
+        </div>
+    </div>
+    {% endif %}
+
+
+<script type="text/javascript">
+$(document).on('blur','#alkr_cmsbundle_good_mapItems [id$="address"]',function(){
+    form = $(this).parent().parent().parent()
+    data = $(this).val()
+    $.ajax({
+        type: "GET",
+        url: "http://geocode-maps.yandex.ru/1.x/?format=json&geocode="+data,
+        async: false,
+        dataType: 'json',
+        success: function(data){
+            pos = data.response.GeoObjectCollection.featureMember[0].GeoObject.Point.pos.match(/(.+) (.+)/)
+            form.find('[id$="lat"]').val(pos[1])
+            form.find('[id$="lng"]').val(pos[2])
+        }
+    });
+})
+$('#alkr_cmsbundle_good_parent').change(function(){
+    $('#alkr_cmsbundle_good_prior').val($(this).find('option:selected').data('next'))
+})
+CKEDITOR.config.protectedSource.push( /<script[\s\S]*?script>/g );
+CKEDITOR.config.allowedContent = true;
+$('.delete_button').click(function(e){
+    if(confirm('Удалить страницу {{ entity.title }} и все дочерние?'))
+        return true
+    else
+        return false
+})
+</script>
+{% endblock %}

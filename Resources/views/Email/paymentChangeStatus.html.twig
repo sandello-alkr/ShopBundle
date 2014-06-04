@@ -1,0 +1,21 @@
+{% set payment_states = {1:'STATE_APPROVED',2:'STATE_APPROVING',3:'STATE_CANCELED',4:'STATE_EXPIRED',5:'STATE_FAILED',6:'STATE_NEW',7:'STATE_DEPOSITING',8:'STATE_DEPOSITED'} %}
+{{'Статус платежа'|trans}}: {{payment_states[payment.state]|trans}}
+<table id="products_table">
+	<tr>
+		<th style="padding:0 15px;">{{'Наименование'|trans}}</th>
+		<th style="padding:0 15px;">{{'Цена'|trans}}, {{currency}}</th>
+		<th style="padding:0 15px;">{{'Количество'|trans}}</th>
+		<th style="padding:0 15px;">{{'Стоимость'|trans}}, {{currency}}</th>
+	</tr>
+	{% for order in cart.orders %}
+	<tr>
+		<td style="padding:0 15px;">{{order.good.title}}</td>
+		<td style="padding:0 15px;">{{order.good.price}}</td>
+		<td style="padding:0 15px;">{{order.count}}</td>
+		<td style="padding:0 15px;">{{order.count * order.good.price}}</td>
+	</tr>
+	{% endfor %}
+	<tr>
+		<td colspan="3" style="padding:0 15px;">{{'Итого'|trans}}</td>
+		<td style="padding:0 15px;">{{cart.amount}}</td>
+</table>

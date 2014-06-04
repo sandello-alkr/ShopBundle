@@ -1,0 +1,22 @@
+{% extends 'CMSBundle:Templates:'~entity.view|default(cms.base_template)~".html.twig" %}
+{% set payment_states = {1:'STATE_APPROVED',2:'STATE_APPROVING',3:'STATE_CANCELED',4:'STATE_EXPIRED',5:'STATE_FAILED',6:'STATE_NEW',7:'STATE_DEPOSITING',8:'STATE_DEPOSITED'} %}
+{% set instruction_states = {1:'STATE_CLOSED',2:'STATE_INVALID',3:'STATE_NEW',4:'STATE_VALID'} %}
+{% set transaction_states = {1:'STATE_CANCELED',2:'STATE_FAILED',3:'STATE_NEW',4:'STATE_PENDING',5:'STATE_SUCCESS'} %}
+{% block body %}
+	<h1>{{'Результат'|trans}}</h1>
+	<div class="inner">
+		{% if instruction is not null %}
+			Instruction: {{instruction_states[instruction.state]}}
+			{% for payment in instruction.payments %}
+			<p>
+				Payment: {{payment_states[payment.state]}}
+				{% for transaction in payment.transactions %}
+				<p>
+					Transaction: {{transaction_states[transaction.state]}}
+				</p>
+				{% endfor %}
+			</p>
+			{% endfor %}
+		{% endif %}
+	</div>
+{% endblock %}
